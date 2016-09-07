@@ -43,6 +43,13 @@ public class Name {
     public List<String> getWordsInName() {
         return Arrays.asList(fullName.split("\\s+"));
     }
+    
+    /**
+     * Retrieves a listing of every word in the name, in order, in lowercase.
+     */
+    public List<String> getWordsInNameLowerCase() {
+        return Arrays.asList(fullName.toLowerCase().split("\\s+"));
+    }
 
     @Override
     public String toString() {
@@ -60,5 +67,40 @@ public class Name {
     public int hashCode() {
         return fullName.hashCode();
     }
+    
+     /**
+      * Returns true of the other name is very similar to this name.
+      * Two names are considered similar if ...
+      */
+     public boolean isSimilar(Name other) {
+         if (other == null) {
+             return false;
+         }
+         
+         return isSuperSetOfIgnoreCase(other) || isSubSetOfIgnoreCase(other);
+     }
 
+    /**
+     * Returns true if this name is a super set of other name
+     */
+    private boolean isSuperSetOfIgnoreCase(Name other) {
+        for (String word : other.getWordsInNameLowerCase()) {
+             if (!this.getWordsInNameLowerCase().contains(word)) {
+                 return false;
+             }
+         }
+        return true;
+    }
+    
+    /**
+     * Returns true if this name is a subset of other name
+     */
+    private boolean isSubSetOfIgnoreCase(Name other) {
+        for (String word : this.getWordsInNameLowerCase()) {
+             if (!other.getWordsInNameLowerCase().contains(word)) {
+                 return false;
+             }
+         }
+        return true;
+    }
 }
